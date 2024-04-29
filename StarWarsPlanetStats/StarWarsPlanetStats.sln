@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarsPlanetStats", "StarWarsPlanetStats\StarWarsPlanetStats.csproj", "{B708A843-A624-497D-8E79-B6D5632DAEE4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B708A843-A624-497D-8E79-B6D5632DAEE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B708A843-A624-497D-8E79-B6D5632DAEE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B708A843-A624-497D-8E79-B6D5632DAEE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B708A843-A624-497D-8E79-B6D5632DAEE4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ACF66BC1-6E07-42B3-9D1C-90F6CE3DA58F}
+	EndGlobalSection
+EndGlobal
