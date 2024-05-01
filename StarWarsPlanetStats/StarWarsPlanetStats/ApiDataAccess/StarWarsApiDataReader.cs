@@ -17,7 +17,8 @@ namespace StarWarsPlanetStats.ApiDataAccess
                 HttpResponseMessage response = await client.GetAsync(requestUri);
                 response.EnsureSuccessStatusCode();
                 string json = await response.Content.ReadAsStringAsync();
+                response.Dispose();
                 return json;
-            }
+            } 
     }
 }
