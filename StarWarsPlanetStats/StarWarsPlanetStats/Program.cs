@@ -66,6 +66,36 @@ namespace StarWarsPlanetStats
                 {
                     Console.WriteLine(planet);
                 }
+                Console.WriteLine("\nWhich property would you like to see?");
+                Console.WriteLine("population");
+                Console.WriteLine("diameter");
+                Console.WriteLine("surface water");
+
+                string userChoice = Console.ReadLine();
+
+                if(userChoice == "population")
+                {
+                    var planetWithMaximumPopulation = planets.MaxBy(p => p.Population);
+                    Console.WriteLine($"Maximum population is on {planetWithMaximumPopulation.Name}" +
+                        $"with a population of {planetWithMaximumPopulation.Population}.");
+                }
+                else if (userChoice == "diameter")
+                {
+                    var planetWithMaximumDiameter = planets.MaxBy(p => p.Diameter);
+                    Console.WriteLine($"Maximum diameter is  in {planetWithMaximumDiameter.Name}" +
+                        $"with a diameter of {planetWithMaximumDiameter.Diameter}.");
+                }
+                else if (userChoice == "surface water")
+                {
+                    var planetWithMaximumSurfaceWater = planets.MaxBy(p => p.SurfaceWater);
+                    Console.WriteLine($"Maximum surface wateris on {planetWithMaximumSurfaceWater.Name}" +
+                        $"with a surface water of {planetWithMaximumSurfaceWater.SurfaceWater}.");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid choice.");
+                }
+
             }
 
             private IEnumerable<Planet> ToPlanets(Root? root)
@@ -82,34 +112,33 @@ namespace StarWarsPlanetStats
                 }
                 return planets;
             }
+        }
+        public readonly record struct Planet
+        {
+            public string Name { get; }
+            public int? Diameter { get; }
+            public int? SurfaceWater { get; }
+            public int? Population { get; }
 
-            public readonly record struct Planet
+            public Planet(string name, int? diameter, int? surfaceWater, int? population)
             {
-                public string Name { get; }
-                public int? Diameter { get; }
-                public int? SurfaceWater { get; }
-                public int? Population { get; }
-
-                public Planet(string name, int? diameter, int? surfaceWater, int? population)
-                {
-                    this.Name = name;
-                    this.Diameter = diameter;
-                    this.SurfaceWater = surfaceWater;
-                    this.Population = population;
-                }
-
-                public static explicit operator Planet(Result planetDto)
-                {
-                    var name = planetDto.name;
-
-                    int? diameter = planetDto.diameter.ToIntOrNull();
-                    int? population = planetDto.population.ToIntOrNull();
-                    int? surfaceWater = planetDto.surface_water.ToIntOrNull();
-
-                    return new Planet(name, diameter, surfaceWater, population);
-                }
-
+                this.Name = name;
+                this.Diameter = diameter;
+                this.SurfaceWater = surfaceWater;
+                this.Population = population;
             }
+
+            public static explicit operator Planet(Result planetDto)
+            {
+                var name = planetDto.name;
+
+                int? diameter = planetDto.diameter.ToIntOrNull();
+                int? population = planetDto.population.ToIntOrNull();
+                int? surfaceWater = planetDto.surface_water.ToIntOrNull();
+
+                return new Planet(name, diameter, surfaceWater, population);
+            }
+
         }
     }
 }
