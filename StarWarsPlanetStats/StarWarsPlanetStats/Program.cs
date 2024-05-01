@@ -8,14 +8,26 @@ namespace StarWarsPlanetStats
     {
         static void Main(string[] args)
         {
-            const string ExpectedBaseAddress = "https://swapi.dev/";
-            const string ExpectedRequestUri = "api/planets/";
+            string? json = null;
+            const string BaseAddress = "https://swapi.dev/";
+            const string RequestUrl = "api/planets/";
             // We will use this if the API is down.
             //IApiDataReader apiDataReader = new MockStarWarsApiDataReader();
-            IApiDataReader apiDataReader = new StarWarsApiDataReader();
-            var jsonTask = apiDataReader.Read(ExpectedBaseAddress, ExpectedRequestUri);
-            var json = jsonTask.Result;
-            Root root = JsonSerializer.Deserialize<Root>(json);
+            try
+            {
+                IApiDataReader apiDataReader = new StarWarsApiDataReader();
+                var jsonTask = apiDataReader.Read(BaseAddress, RequestUrl);
+                json = jsonTask.Result;
+            }
+            catch(HttpRequestException ex) 
+            {
+                Console.WriteLine("API request was unsuccessful switching to mock API data.\n"+
+                                   $"Exception message is: {ex.Message}");
+                IApiDataReader apiDataReader = new MockStarWarsApiDataReader();
+                var jsonTask = apiDataReader.Read(BaseAddress, RequestUrl);
+                json = jsonTask.Result;
+            }
+            Root? root = JsonSerializer.Deserialize<Root>(json);
             Console.ReadKey();
         }
     }
