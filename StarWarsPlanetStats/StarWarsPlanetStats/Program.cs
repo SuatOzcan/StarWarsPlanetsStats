@@ -7,7 +7,7 @@ using System.Text.Json;
 namespace StarWarsPlanetStats
 {
     internal class Program
-    {
+    { 
         static void Main(string[] args)
         {
             const string BaseAddress = "https://swapi.dev/";
@@ -23,6 +23,7 @@ namespace StarWarsPlanetStats
                 Console.WriteLine( $"An error occurred. Exception message is: {ex.Message}.");
             }
             Console.ReadKey();
+            
         }
 
         public class StarWarsPlanetStatsApp
@@ -59,7 +60,12 @@ namespace StarWarsPlanetStats
                 }
                 Root? root = JsonSerializer.Deserialize<Root>(json);
 
+
                 var planets = ToPlanets(root);
+                foreach(Planet planet in planets)
+                {
+                    Console.WriteLine(planet);
+                }
             }
 
             private IEnumerable<Planet> ToPlanets(Root? root)
@@ -68,7 +74,13 @@ namespace StarWarsPlanetStats
                 {
                     return Enumerable.Empty<Planet>();
                 }
-                throw new NotImplementedException();
+                List<Planet> planets = new List<Planet>();
+                foreach(var planetDto in root.results) 
+                {
+                    Planet planet = (Planet)planetDto; // convert to planet somehow
+                    planets.Add(planet);
+                }
+                return planets;
             }
 
             public readonly record struct Planet
@@ -85,6 +97,18 @@ namespace StarWarsPlanetStats
                     this.SurfaceWater = surfaceWater;
                     this.Population = population;
                 }
+
+                public static explicit operator Planet(Result planetDto)
+                {
+                    var name = planetDto.name;
+
+                    int? diameter = planetDto.diameter.ToIntOrNull();
+                    int? population = planetDto.population.ToIntOrNull();
+                    int? surfaceWater = planetDto.surface_water.ToIntOrNull();
+
+                    return new Planet(name, diameter, surfaceWater, population);
+                }
+
             }
         }
     }
