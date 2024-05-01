@@ -1,8 +1,6 @@
-﻿using StarWarsPlanetsStats.ApiDataAccess;
-using StarWarsPlanetStats.ApiDataAccess;
+﻿using StarWarsPlanetStats.ApiDataAccess;
 using StarWarsPlanetStats.DataTransferObjects;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace StarWarsPlanetStats
 {

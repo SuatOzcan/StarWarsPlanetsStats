@@ -1,4 +1,4 @@
-﻿namespace StarWarsPlanetsStats.ApiDataAccess;
+﻿namespace StarWarsPlanetStats.ApiDataAccess;
 
 public interface IApiDataReader
 {

@@ -1,6 +1,6 @@
-﻿namespace StarWarsPlanetsStats.ApiDataAccess;
+﻿namespace StarWarsPlanetStats.ApiDataAccess;
 
-//you can use this class in case SWAPI is down
+//We can use this class in case SWAPI is down.
 public class MockStarWarsApiDataReader : IApiDataReader
 {
     private const string ExpectedBaseAddress = "https://swapi.dev/";
