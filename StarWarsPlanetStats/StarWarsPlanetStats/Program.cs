@@ -78,18 +78,30 @@ namespace StarWarsPlanetStats
                     var planetWithMaximumPopulation = planets.MaxBy(p => p.Population);
                     Console.WriteLine($"Maximum population is on {planetWithMaximumPopulation.Name}" +
                         $"with a population of {planetWithMaximumPopulation.Population}.");
+
+                    var planetWithMinimumPopulation = planets.MinBy(p => p.Population);
+                    Console.WriteLine($"Minimum population is on {planetWithMinimumPopulation.Name}" +
+                        $"with a population of {planetWithMinimumPopulation.Population}.");
                 }
                 else if (userChoice == "diameter")
                 {
                     var planetWithMaximumDiameter = planets.MaxBy(p => p.Diameter);
-                    Console.WriteLine($"Maximum diameter is  in {planetWithMaximumDiameter.Name}" +
+                    Console.WriteLine($"Maximum diameter is in {planetWithMaximumDiameter.Name}" +
                         $"with a diameter of {planetWithMaximumDiameter.Diameter}.");
+
+                    var planetWithMinimumDiameter = planets.MinBy(p => p.Diameter);
+                    Console.WriteLine($"minimum diameter is in {planetWithMinimumDiameter.Name}" +
+                        $"with a diameter of {planetWithMinimumDiameter.Diameter}.");
                 }
                 else if (userChoice == "surface water")
                 {
                     var planetWithMaximumSurfaceWater = planets.MaxBy(p => p.SurfaceWater);
-                    Console.WriteLine($"Maximum surface wateris on {planetWithMaximumSurfaceWater.Name}" +
+                    Console.WriteLine($"Maximum surface water is on {planetWithMaximumSurfaceWater.Name}" +
                         $"with a surface water of {planetWithMaximumSurfaceWater.SurfaceWater}.");
+
+                    var planetWithMinimumSurfaceWater = planets.MinBy(p => p.SurfaceWater);
+                    Console.WriteLine($"Mainimum surface water is on {planetWithMinimumSurfaceWater.Name}" +
+                        $"with a surface water of {planetWithMinimumSurfaceWater.SurfaceWater}.");
                 }
                 else
                 {
