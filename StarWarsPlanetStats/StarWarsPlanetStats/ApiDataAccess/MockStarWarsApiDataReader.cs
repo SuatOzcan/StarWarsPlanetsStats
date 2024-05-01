@@ -9,6 +9,7 @@ public class MockStarWarsApiDataReader : IApiDataReader
     public Task<string> Read(
         string baseAddress, string requestUri)
     {
+        // We will use this if the API is down.
         if (baseAddress != ExpectedBaseAddress)
         {
             throw new ArgumentException(
@@ -21,6 +22,7 @@ public class MockStarWarsApiDataReader : IApiDataReader
         }
 
         return Task.FromResult(Result);
+
     }
 
     private const string Result = @"
