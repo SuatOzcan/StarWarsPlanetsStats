@@ -79,7 +79,7 @@ namespace StarWarsPlanetStats
                 Console.WriteLine("\nWhich property would you like to see?");
                 Console.WriteLine(string.Join(Environment.NewLine,propertyNameToSelectorsMapping.Keys));
                 string? userChoice = Console.ReadLine();
-                if(!propertyNameToSelectorsMapping.ContainsKey(userChoice))
+                if(userChoice is null || !propertyNameToSelectorsMapping.ContainsKey(userChoice))
                 {
                     Console.WriteLine("Invalid choice.");
                 }
@@ -89,7 +89,7 @@ namespace StarWarsPlanetStats
                 }
             }
 
-            private void ShowStatistics(IEnumerable<Planet> planets, string propertyName, 
+            private static void ShowStatistics(IEnumerable<Planet> planets, string propertyName, 
                                         Func<Planet, int?> propertySelector)
             {
                 var planetWithMaximumProperty = planets.MaxBy(propertySelector);
@@ -104,26 +104,28 @@ namespace StarWarsPlanetStats
                 //    $" with a population of {propertySelector(planetWithMinimumProperty)}.");
             }
 
-            private void DisplayMinMax(Planet planet, string propertyName,
+            private static void DisplayMinMax(Planet planet, string propertyName,
                                     Func<Planet, int?> propertySelector, string minOrMax)
             {
                 Console.WriteLine($"{minOrMax} {propertyName} is on {planet.Name}" +
                     $" with a {propertyName} of {propertySelector(planet)}.");
             }
 
-            private IEnumerable<Planet> ToPlanets(Root? root)
+            private static IEnumerable<Planet> ToPlanets(Root? root)
             {
                 if(root == null)
                 {
                     return Enumerable.Empty<Planet>();
                 }
-                List<Planet> planets = new List<Planet>();
-                foreach(var planetDto in root.results) 
-                {
-                    Planet planet = (Planet)planetDto; // convert to planet somehow
-                    planets.Add(planet);
-                }
-                return planets;
+                //List<Planet> planets = new List<Planet>();
+                //foreach(var planetDto in root.results) 
+                //{
+                //    Planet planet = (Planet)planetDto; // convert to planet somehow
+                //    planets.Add(planet);
+                //}
+                //return planets;
+
+                return root.results.Select(result => (Planet) result);
             }
         }
         public readonly record struct Planet
