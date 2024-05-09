@@ -1,5 +1,6 @@
 ﻿using StarWarsPlanetStats.ApiDataAccess;
 using StarWarsPlanetStats.DataTransferObjects;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -75,39 +76,51 @@ namespace StarWarsPlanetStats
 
                 if(userChoice == "population")
                 {
-                    var planetWithMaximumPopulation = planets.MaxBy(p => p.Population);
-                    Console.WriteLine($"Maximum population is on {planetWithMaximumPopulation.Name}" +
-                        $"with a population of {planetWithMaximumPopulation.Population}.");
+                    ShowStatistics(planets, "population", planet => planet.Population);
+                    //var planetWithMaximumPopulation = planets.MaxBy(p => p.Population);
 
-                    var planetWithMinimumPopulation = planets.MinBy(p => p.Population);
-                    Console.WriteLine($"Minimum population is on {planetWithMinimumPopulation.Name}" +
-                        $"with a population of {planetWithMinimumPopulation.Population}.");
+                    //Console.WriteLine($"Maximum population is on {planetWithMaximumPopulation.Name}" +
+                    //    $"with a population of {planetWithMaximumPopulation.Population}.");
+
+                    //var planetWithMinimumPopulation = planets.MinBy(p => p.Population);
+                    //Console.WriteLine($"Minimum population is on {planetWithMinimumPopulation.Name}" +
+                    //    $" with a population of {planetWithMinimumPopulation.Population}.");
                 }
                 else if (userChoice == "diameter")
                 {
-                    var planetWithMaximumDiameter = planets.MaxBy(p => p.Diameter);
-                    Console.WriteLine($"Maximum diameter is in {planetWithMaximumDiameter.Name}" +
-                        $"with a diameter of {planetWithMaximumDiameter.Diameter}.");
-
-                    var planetWithMinimumDiameter = planets.MinBy(p => p.Diameter);
-                    Console.WriteLine($"minimum diameter is in {planetWithMinimumDiameter.Name}" +
-                        $"with a diameter of {planetWithMinimumDiameter.Diameter}.");
+                    ShowStatistics(planets, "diameter", planet => planet.Diameter);
+                    
                 }
                 else if (userChoice == "surface water")
                 {
-                    var planetWithMaximumSurfaceWater = planets.MaxBy(p => p.SurfaceWater);
-                    Console.WriteLine($"Maximum surface water is on {planetWithMaximumSurfaceWater.Name}" +
-                        $"with a surface water of {planetWithMaximumSurfaceWater.SurfaceWater}.");
-
-                    var planetWithMinimumSurfaceWater = planets.MinBy(p => p.SurfaceWater);
-                    Console.WriteLine($"Mainimum surface water is on {planetWithMinimumSurfaceWater.Name}" +
-                        $"with a surface water of {planetWithMinimumSurfaceWater.SurfaceWater}.");
+                    ShowStatistics(planets, "surface water", planet => planet.SurfaceWater);
                 }
                 else
                 {
                     Console.WriteLine("Invalid choice.");
                 }
+            }
 
+            private void ShowStatistics(IEnumerable<Planet> planets, string propertyName, 
+                                        Func<Planet, int?> propertySelector)
+            {
+                var planetWithMaximumProperty = planets.MaxBy(propertySelector);
+
+                DisplayMinMax(planetWithMaximumProperty, propertyName, propertySelector, "Maximum");
+                //Console.WriteLine($"Maximum {propertyName} is on {planetWithMaximumProperty.Name}" +
+                //    $"with a population of {propertySelector(planetWithMaximumProperty)}.");
+
+                var planetWithMinimumProperty = planets.MinBy(propertySelector);
+                DisplayMinMax(planetWithMinimumProperty, propertyName, propertySelector, "Minimum");
+                //Console.WriteLine($"Minimum {propertyName} is on {planetWithMinimumProperty.Name}" +
+                //    $" with a population of {propertySelector(planetWithMinimumProperty)}.");
+            }
+
+            private void DisplayMinMax(Planet planet, string propertyName,
+                                    Func<Planet, int?> propertySelector, string minOrMax)
+            {
+                Console.WriteLine($"{minOrMax} {propertyName} is on {planet.Name}" +
+                    $" with a {propertyName} of {propertySelector(planet)}.");
             }
 
             private IEnumerable<Planet> ToPlanets(Root? root)
@@ -131,13 +144,18 @@ namespace StarWarsPlanetStats
             public int? Diameter { get; }
             public int? SurfaceWater { get; }
             public int? Population { get; }
+            public string? Gravity { get; }
+            public string? Terrain { get;}
 
-            public Planet(string name, int? diameter, int? surfaceWater, int? population)
+            public Planet(string name, int? diameter, int? surfaceWater, int? population, 
+                            string? gravity, string? terrain)
             {
                 this.Name = name;
                 this.Diameter = diameter;
                 this.SurfaceWater = surfaceWater;
                 this.Population = population;
+                this.Gravity = gravity;
+                this.Terrain = terrain;
             }
 
             public static explicit operator Planet(Result planetDto)
@@ -147,8 +165,10 @@ namespace StarWarsPlanetStats
                 int? diameter = planetDto.diameter.ToIntOrNull();
                 int? population = planetDto.population.ToIntOrNull();
                 int? surfaceWater = planetDto.surface_water.ToIntOrNull();
+                string? gravity = planetDto.gravity;
+                string? terrain = planetDto.terrain;
 
-                return new Planet(name, diameter, surfaceWater, population);
+                return new Planet(name, diameter, surfaceWater, population, gravity, terrain);
             }
 
         }

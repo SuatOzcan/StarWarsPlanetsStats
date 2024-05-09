@@ -20,9 +20,7 @@ public class MockStarWarsApiDataReader : IApiDataReader
             throw new ArgumentException(
                $"Request URI can only be {ExpectedRequestUri}");
         }
-
         return Task.FromResult(Result);
-
     }
 
     private const string Result = @"
