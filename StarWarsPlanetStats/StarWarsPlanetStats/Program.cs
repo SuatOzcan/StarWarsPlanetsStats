@@ -67,12 +67,6 @@ namespace StarWarsPlanetStats
                 {
                     Console.WriteLine(planet);
                 }
-                Console.WriteLine("\nWhich property would you like to see?");
-                Console.WriteLine("population");
-                Console.WriteLine("diameter");
-                Console.WriteLine("surface water");
-
-                string userChoice = Console.ReadLine();
 
                 Dictionary<string, Func<Planet, int?>> propertyNameToSelectorsMapping =
                     new Dictionary<string, Func<Planet, int?>>
@@ -82,9 +76,15 @@ namespace StarWarsPlanetStats
                         ["surface water"] = planet => planet.SurfaceWater
                     };
 
-                if(propertyNameToSelectorsMapping[userChoice] is not null)
+                Console.WriteLine("\nWhich property would you like to see?");
+                Console.WriteLine(string.Join(Environment.NewLine,propertyNameToSelectorsMapping.Keys));
+                string? userChoice = Console.ReadLine();
+
+                
+
+                if(userChoice is not null && propertyNameToSelectorsMapping[userChoice] is not null)
                 {
-                    ShowStatistics(planets, "population", propertyNameToSelectorsMapping[userChoice]);
+                    ShowStatistics(planets, userChoice, propertyNameToSelectorsMapping[userChoice]);
                 }
                 else
                 {
