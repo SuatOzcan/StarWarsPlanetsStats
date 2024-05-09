@@ -79,16 +79,13 @@ namespace StarWarsPlanetStats
                 Console.WriteLine("\nWhich property would you like to see?");
                 Console.WriteLine(string.Join(Environment.NewLine,propertyNameToSelectorsMapping.Keys));
                 string? userChoice = Console.ReadLine();
-
-                
-
-                if(userChoice is not null && propertyNameToSelectorsMapping[userChoice] is not null)
+                if(!propertyNameToSelectorsMapping.ContainsKey(userChoice))
                 {
-                    ShowStatistics(planets, userChoice, propertyNameToSelectorsMapping[userChoice]);
+                    Console.WriteLine("Invalid choice.");
                 }
                 else
                 {
-                    Console.WriteLine("Invalid choice.");
+                    ShowStatistics(planets, userChoice, propertyNameToSelectorsMapping[userChoice]);
                 }
             }
 
