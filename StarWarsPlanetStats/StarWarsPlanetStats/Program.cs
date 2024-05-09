@@ -74,26 +74,17 @@ namespace StarWarsPlanetStats
 
                 string userChoice = Console.ReadLine();
 
-                if(userChoice == "population")
-                {
-                    ShowStatistics(planets, "population", planet => planet.Population);
-                    //var planetWithMaximumPopulation = planets.MaxBy(p => p.Population);
+                Dictionary<string, Func<Planet, int?>> propertyNameToSelectorsMapping =
+                    new Dictionary<string, Func<Planet, int?>>
+                    {
+                        ["population"] = planet => planet.Population,
+                        ["diameter"] = planet => planet.Diameter,
+                        ["surface water"] = planet => planet.SurfaceWater
+                    };
 
-                    //Console.WriteLine($"Maximum population is on {planetWithMaximumPopulation.Name}" +
-                    //    $"with a population of {planetWithMaximumPopulation.Population}.");
-
-                    //var planetWithMinimumPopulation = planets.MinBy(p => p.Population);
-                    //Console.WriteLine($"Minimum population is on {planetWithMinimumPopulation.Name}" +
-                    //    $" with a population of {planetWithMinimumPopulation.Population}.");
-                }
-                else if (userChoice == "diameter")
+                if(propertyNameToSelectorsMapping[userChoice] is not null)
                 {
-                    ShowStatistics(planets, "diameter", planet => planet.Diameter);
-                    
-                }
-                else if (userChoice == "surface water")
-                {
-                    ShowStatistics(planets, "surface water", planet => planet.SurfaceWater);
+                    ShowStatistics(planets, "population", propertyNameToSelectorsMapping[userChoice]);
                 }
                 else
                 {
