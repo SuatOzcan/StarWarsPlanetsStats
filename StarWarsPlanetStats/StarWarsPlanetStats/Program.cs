@@ -31,15 +31,17 @@ namespace StarWarsPlanetStats
         {
             private readonly IApiDataReader _apiDataReader;
             private readonly IApiDataReader _mockApiDataReader;
+            //private readonly IPlanetsReader _planetsReader;
 
             public StarWarsPlanetStatsApp(IApiDataReader apiDataReader, IApiDataReader _secondApiDataReader)
             {
                 this._apiDataReader = apiDataReader;
                 this._mockApiDataReader = _secondApiDataReader;
-
+                //_planetsReader = planetsReader;
             }
-            public void Run(string baseAddress, string requestUri)
+            public async void Run(string baseAddress, string requestUri)
             {
+                //var planets = await _planetsReader.Read();
                 string? json = null;
                 
                 try
@@ -63,13 +65,17 @@ namespace StarWarsPlanetStats
 
 
                 var planets = ToPlanets(root);
-                foreach(Planet planet in planets)
-                {
-                    Console.WriteLine(planet);
-                }
 
-                Dictionary<string, Func<Planet, int?>> propertyNameToSelectorsMapping =
-                    new Dictionary<string, Func<Planet, int?>>
+                TablePrinter.Print(planets);
+                //foreach(Planet planet in planets)
+                //{
+                //    //Console.WriteLine(planet);
+
+                //}
+
+
+                Dictionary<string, Func<Planet, long?>> propertyNameToSelectorsMapping =
+                    new Dictionary<string, Func<Planet, long?>>
                     {
                         ["population"] = planet => planet.Population,
                         ["diameter"] = planet => planet.Diameter,
@@ -78,6 +84,15 @@ namespace StarWarsPlanetStats
 
                 Console.WriteLine("\nWhich property would you like to see?");
                 Console.WriteLine(string.Join(Environment.NewLine,propertyNameToSelectorsMapping.Keys));
+                IEnumerable<string> b = propertyNameToSelectorsMapping.Keys.Select(a => 
+                                                            { Console.WriteLine(a);
+                                                                return a;
+                                                            });
+                //foreach (var property in b)
+                //{
+                //    // The Linq query worked when its enumeration ability is used.
+                //    // This means keys were written on th console when execution is in this for each loop.
+                //}
                 string? userChoice = Console.ReadLine();
                 if(userChoice is null || !propertyNameToSelectorsMapping.ContainsKey(userChoice))
                 {
@@ -90,7 +105,7 @@ namespace StarWarsPlanetStats
             }
 
             private static void ShowStatistics(IEnumerable<Planet> planets, string propertyName, 
-                                        Func<Planet, int?> propertySelector)
+                                        Func<Planet, long?> propertySelector)
             {
                 var planetWithMaximumProperty = planets.MaxBy(propertySelector);
 
@@ -105,7 +120,7 @@ namespace StarWarsPlanetStats
             }
 
             private static void DisplayMinMax(Planet planet, string propertyName,
-                                    Func<Planet, int?> propertySelector, string minOrMax)
+                                    Func<Planet, long?> propertySelector, string minOrMax)
             {
                 Console.WriteLine($"{minOrMax} {propertyName} is on {planet.Name}" +
                     $" with a {propertyName} of {propertySelector(planet)}.");
@@ -133,11 +148,11 @@ namespace StarWarsPlanetStats
             public string Name { get; }
             public int? Diameter { get; }
             public int? SurfaceWater { get; }
-            public int? Population { get; }
+            public long? Population { get; }
             public string? Gravity { get; }
             public string? Terrain { get;}
 
-            public Planet(string name, int? diameter, int? surfaceWater, int? population, 
+            public Planet(string name, int? diameter, int? surfaceWater, long? population, 
                             string? gravity, string? terrain)
             {
                 this.Name = name;
@@ -153,7 +168,7 @@ namespace StarWarsPlanetStats
                 var name = planetDto.name;
 
                 int? diameter = planetDto.diameter.ToIntOrNull();
-                int? population = planetDto.population.ToIntOrNull();
+                long? population = planetDto.population.ToLongOrNull();
                 int? surfaceWater = planetDto.surface_water.ToIntOrNull();
                 string? gravity = planetDto.gravity;
                 string? terrain = planetDto.terrain;
